@@ -10,6 +10,7 @@ pinecone[grpc]
 langchain-pinecone
 langchain-community==0.3.26
 langchain-groq
+langchain-openai==0.3.24
 langchain_experimental
 -e .
 

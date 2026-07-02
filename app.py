@@ -1,8 +1,12 @@
 from flask import Flask ,render_template,jsonify,request
 from src.helper import download_hugging_face_embeddings
 from langchain_pinecone import PineconeVectorStore
+<<<<<<< HEAD
 from pinecone import Pinecone
 from langchain_groq import ChatGroq
+=======
+from langchain_openai import ChatOpenAI
+>>>>>>> 08c31b552c6161bf710ca72cc84db5f181a08cc1
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
@@ -27,15 +31,27 @@ os.environ["PINECONE_API_KEY"] = PINECONE_API_KEY
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
 
+
+
 embeddings = download_hugging_face_embeddings()
 
 index_name = "medical-chatbot" 
+<<<<<<< HEAD
 pc = Pinecone(api_key=PINECONE_API_KEY)
 index = pc.Index(index_name)
 docsearch = PineconeVectorStore(index=index, embedding=embeddings)
 retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
 
 chatModel = ChatGroq(model="llama-3.3-70b-versatile")
+=======
+docsearch = PineconeVectorStore.from_existing_index(
+    index_name=index_name,
+    embedding=embeddings
+)
+retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
+
+chatModel = ChatOpenAI(model="gpt-4o")
+>>>>>>> 08c31b552c6161bf710ca72cc84db5f181a08cc1
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
