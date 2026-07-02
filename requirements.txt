@@ -1,0 +1,15 @@
+flask
+gunicorn
+langchain
+pinecone-client
+sentence-transformers
+transformers
+pypdf
+python-dotenv
+pinecone[grpc]
+langchain-pinecone
+langchain-community==0.3.26
+langchain-groq
+langchain_experimental
+-e .
+

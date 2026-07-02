@@ -1,0 +1,9 @@
+Metadata-Version: 2.4
+Name: GEN-AI-PROJECT
+Version: 0.0.0
+Author: harsh
+Author-email: harsh.sharma4131@gmail.com
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: license-file
