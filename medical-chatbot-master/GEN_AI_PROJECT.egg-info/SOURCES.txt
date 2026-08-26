@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+LICENSE
+README.md
+=======
+>>>>>>> 08c31b552c6161bf710ca72cc84db5f181a08cc1
+setup.py
+GEN_AI_PROJECT.egg-info/PKG-INFO
+GEN_AI_PROJECT.egg-info/SOURCES.txt
+GEN_AI_PROJECT.egg-info/dependency_links.txt
+GEN_AI_PROJECT.egg-info/top_level.txt
+src/__init__.py
+<<<<<<< HEAD
+src/helper.py
+src/prompt.py
+=======
+src/helper.py
+>>>>>>> 08c31b552c6161bf710ca72cc84db5f181a08cc1
