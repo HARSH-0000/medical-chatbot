@@ -3,12 +3,7 @@ Name: GEN-AI-PROJECT
 Version: 0.0.0
 Author: harsh
 Author-email: harsh.sharma4131@gmail.com
-<<<<<<< HEAD
 License-File: LICENSE
 Dynamic: author
 Dynamic: author-email
 Dynamic: license-file
-=======
-Dynamic: author
-Dynamic: author-email
->>>>>>> 08c31b552c6161bf710ca72cc84db5f181a08cc1

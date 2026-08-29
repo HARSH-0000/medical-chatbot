@@ -18,7 +18,6 @@ This project builds a conversational healthcare assistant capable of answering m
 - 📚 **Context-aware answers** — grounded in structured medical knowledge
 - 🔍 **Intelligent query understanding** — via NLP preprocessing
 - ⚡ **Real-time interaction** — responsive user-friendly interface
-- 🛠️ **Scalable architecture** — designed for RAG, vector DB, and fine-tuning extensions
 
 ---
 

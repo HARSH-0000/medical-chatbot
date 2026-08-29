@@ -3,7 +3,6 @@ from typing import List, TypedDict
 from pydantic import BaseModel, Field
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.tools import DuckDuckGoSearchResults
 from langgraph.graph import StateGraph, START, END
 
 from src.prompt import (
@@ -57,7 +56,7 @@ def build_crag_chain(retriever, llm):
     """
     Build and compile the Corrective RAG (CRAG) graph.
 
-    retrieve -> grade_documents -> (transform_documents | rewrite_query -> web_search)
+    retrieve -> grade_documents -> (transform_documents | rewrite_query)
              -> generate -> grade_generation -> (END | rewrite_query)
     """
 
@@ -85,8 +84,6 @@ def build_crag_chain(retriever, llm):
             ("human", "{input}"),
         ]
     )
-
-    web_search_tool = DuckDuckGoSearchResults(num_results=3)
 
     # ------------------------- Nodes -------------------------
 
@@ -118,11 +115,11 @@ def build_crag_chain(retriever, llm):
         return {"documents": filtered_docs}
 
     def decide_to_generate(state: GraphState):
-        """Route to generation when relevant docs exist, else correct via web search."""
+        """Route to generation when relevant docs exist, else rewrite the query."""
         if state["documents"]:
             print("[CRAG] decide_to_generate: generate from retrieved docs")
             return "transform_documents"
-        print("[CRAG] decide_to_generate: no relevant docs -> rewrite + web search")
+        print("[CRAG] decide_to_generate: no relevant docs -> rewrite query")
         return "rewrite_query"
 
     def transform_documents(state: GraphState):
@@ -141,14 +138,6 @@ def build_crag_chain(retriever, llm):
             query_rewrite_prompt_tpl.invoke({"question": question})
         ).content
         return {"rewritten_query": rewritten.strip()}
-
-    def web_search(state: GraphState):
-        """DuckDuckGo fallback; search results become the generation context."""
-        query = state["rewritten_query"]
-        print(f"[CRAG] web_search: {query}")
-        results = web_search_tool.invoke(query)
-        web_doc = Document(page_content=str(results), metadata={"source": "web"})
-        return {"documents": [web_doc], "retry_count": state.get("retry_count", 0) + 1}
 
     def generate(state: GraphState):
         """Generate the answer from the (possibly corrected) context."""
@@ -203,7 +192,6 @@ def build_crag_chain(retriever, llm):
     workflow.add_node("grade_documents", grade_documents)
     workflow.add_node("transform_documents", transform_documents)
     workflow.add_node("rewrite_query", rewrite_query)
-    workflow.add_node("web_search", web_search)
     workflow.add_node("generate", generate)
 
     workflow.add_edge(START, "retrieve")
@@ -214,8 +202,7 @@ def build_crag_chain(retriever, llm):
         ["transform_documents", "rewrite_query"],
     )
     workflow.add_edge("transform_documents", "generate")
-    workflow.add_edge("rewrite_query", "web_search")
-    workflow.add_edge("web_search", "generate")
+    workflow.add_edge("rewrite_query", "generate")
     workflow.add_conditional_edges(
         "generate",
         decide_after_grading,

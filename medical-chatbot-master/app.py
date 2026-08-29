@@ -34,7 +34,7 @@ index = pc.Index(index_name)
 docsearch = PineconeVectorStore(index=index, embedding=embeddings)
 retriever = docsearch.as_retriever(search_type="similarity", search_kwargs={"k":3})
 
-chatModel = ChatGroq(model="llama-3.3-70b-versatile")
+chatModel = ChatGroq(model="openai/gpt-oss-120b")
 
 crag_chain = build_crag_chain(retriever, chatModel)
 

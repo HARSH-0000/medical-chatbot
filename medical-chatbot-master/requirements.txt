@@ -1,7 +1,6 @@
 flask
 gunicorn
 langchain
-pinecone-client
 sentence-transformers
 transformers
 pypdf
